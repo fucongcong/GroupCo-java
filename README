@@ -21,6 +21,17 @@
 
 #### 使用Group-Co框架的Tcp客户端调用
 
+##### 注意设置config/app.php中
+```php
+        'protocol' => 'buf',
+        //包体的打包方式json,serialize
+        'pack' => 'json',
+        //是否启用gzip压缩true,false
+        'gzip' => false,
+```
+
+##### 调用
+
 ```php
     $tcp = new AsyncTcp('127.0.0.1', 9394);
     $res = (yield $tcp->call(['cmd' => 'User::getUser', 'data' => ['id' => 1, 'name' => "coco"]]));
