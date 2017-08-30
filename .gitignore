@@ -1,0 +1,9 @@
+.idea
+*.class
+# Package Files #
+*.jar
+*.war
+*.ear
+.gradle
+*/.DS_Store
+.DS_Store
