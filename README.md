@@ -2,22 +2,35 @@
 
 ### How it works
 
-#### 服务端提供Service
+#### Interface
+```java
+    package Service;
+
+    public interface UserService {
+
+        public String getUser(int id, String name);
+    }
+
+```
+#### 服务端提供Service实例
 
 ```java
 
-    package Service;
+    package Service.Impl;
 
     import Core.Param;
+    import Service.UserService;
 
-    public class UserService {
+    public class UserServiceImpl implements UserService {
 
-        public String getUser(@Param("id") int id,  @Param("name") String name) {
+        public String getUser(@Param("id") int id, @Param("name") String name) {
             return "user_"+id+"_"+name;
         }
     }
 
 ```
+
+#### 启动Server
 
 #### 使用Group-Co框架的Tcp客户端调用
 

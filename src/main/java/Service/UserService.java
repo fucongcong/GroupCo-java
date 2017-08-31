@@ -1,10 +1,6 @@
 package Service;
 
-import Core.Param;
+public interface UserService {
 
-public class UserService {
-
-    public String getUser(@Param("id") int id,  @Param("name") String name) {
-        return "user_"+id+"_"+name;
-    }
+    public String getUser(int id, String name);
 }

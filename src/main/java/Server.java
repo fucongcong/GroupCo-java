@@ -84,7 +84,7 @@ public class Server {
         }
         String[] serviceAndMethod = cmd.split("::");
 
-        String className = "Service." + uCfirst(serviceAndMethod[0]) + "Service";
+        String className = "Service.Impl." + uCfirst(serviceAndMethod[0]) + "ServiceImpl";
         String methodName = serviceAndMethod[1];
         Class service = null;
         Method m = null;
