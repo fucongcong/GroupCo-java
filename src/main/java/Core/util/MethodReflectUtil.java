@@ -5,7 +5,7 @@ import Core.annotation.Param;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-public class MethodReflect {
+public class MethodReflectUtil {
     public static String[] getMethodParameterNamesByAnnotation(Method method) {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         if (parameterAnnotations == null || parameterAnnotations.length == 0) {
