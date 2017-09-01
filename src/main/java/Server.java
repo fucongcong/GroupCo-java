@@ -1,14 +1,13 @@
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import Core.Data;
-import Core.Param;
+import Core.pack.Data;
+import Core.util.MethodReflect;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -17,6 +16,10 @@ public class Server {
     protected static ServerSocket server;
 
     protected static int port = 9394;
+
+    protected static long packageMaxLength = 2000000;
+
+    protected static String protocol = "groupco";
 
     public static void main(String[] args) {
         run();
@@ -66,8 +69,11 @@ public class Server {
             BufferedInputStream is = new BufferedInputStream(client.getInputStream());
             byte[] buf = new byte[4];
             is.read(buf, 0, 4);
-
             int bodylEN = Integer.parseInt(bytesToHexString(buf), 16);
+            if (bodylEN <= 0 || bodylEN > packageMaxLength) {
+                throw new IOException();
+            }
+            
             byte[] body = new byte[bodylEN];
             is.read(body, 0, bodylEN);
 
@@ -95,7 +101,7 @@ public class Server {
             for (int i = 0; i < methods.length; i++) {
                 if (methodName.equals(methods[i].getName())) {
                     Object servobj = service.newInstance();
-                    String[] parameterNames = getMethodParameterNamesByAnnotation(methods[i]);
+                    String[] parameterNames = MethodReflect.getMethodParameterNamesByAnnotation(methods[i]);
 
                     if (parameterNames.length > 0) {
                         JSONObject jsonObj = JSON.parseObject(data);
@@ -148,23 +154,5 @@ public class Server {
     public static String uCfirst(String str)
     {
         return str.replaceFirst(str.substring(0, 1),str.substring(0, 1).toUpperCase()) ;
-    }
-
-    public static String[] getMethodParameterNamesByAnnotation(Method method) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (parameterAnnotations == null || parameterAnnotations.length == 0) {
-            return null;
-        }
-        String[] parameterNames = new String[parameterAnnotations.length];
-        int i = 0;
-        for (Annotation[] parameterAnnotation : parameterAnnotations) {
-            for (Annotation annotation : parameterAnnotation) {
-                if (annotation instanceof Param) {
-                    Param param = (Param) annotation;
-                    parameterNames[i++] = param.value();
-                }
-            }
-        }
-        return parameterNames;
     }
 }

@@ -1,4 +1,4 @@
-package Core;
+package Core.pack;
 
 public class Data {
 
