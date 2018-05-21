@@ -4,8 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.util.Iterator;
+import java.util.Set;
 
 import Core.pack.Data;
 import Core.util.MethodReflectUtil;
@@ -14,6 +20,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class Server {
+
+    private Selector selector;
 
     protected ServerSocket server;
 
@@ -31,17 +39,17 @@ public class Server {
         try {
             server = new ServerSocket(port);
 
-            Socket client = server.accept();
             //while (true) {
-            try {
-                Data data = read(client);
-                String res = invoke(data.getCmd(), data.getData());
-                write(data.getCmd(), res, client);
-                close(client);
-            } catch (IOException e) {
-                close(client);
-            }
-
+                try {
+                    Socket client = server.accept();
+                    Data data = read(client);
+                    String res = invoke(data.getCmd(), data.getData());
+                    write(data.getCmd(), res, client);
+                    closeClient(client);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            //}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,14 +69,13 @@ public class Server {
         out.writeBytes(res);
     }
 
-    public void close(Socket client) {
-        try {
-            client.shutdownInput();
-            client.close();
-            server.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void closeClient(Socket client) throws IOException {
+        client.shutdownInput();
+        client.close();
+    }
+
+    public void close() throws IOException {
+        server.close();
     }
 
     public Data read(Socket client) throws IOException {
