@@ -1,4 +1,4 @@
-package Core.pack;
+package com.co.server.pack;
 
 public class Data {
 

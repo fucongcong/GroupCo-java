@@ -1,2 +1,5 @@
 rootProject.name = 'groupco'
+include 'netty-demo'
+include 'co-server'
+include 'co-demo'
 

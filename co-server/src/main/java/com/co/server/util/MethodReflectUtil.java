@@ -1,6 +1,6 @@
-package Core.util;
+package com.co.server.util;
 
-import Core.annotation.Param;
+import com.co.server.annotation.Param;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -24,10 +24,3 @@ public class MethodReflectUtil {
         return parameterNames;
     }
 }
-
-
-
-
-
-
-

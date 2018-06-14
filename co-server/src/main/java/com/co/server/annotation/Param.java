@@ -1,4 +1,4 @@
-package Core.annotation;
+package com.co.server.annotation;
 
 import java.lang.annotation.*;
 

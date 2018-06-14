@@ -7,3 +7,5 @@
 .gradle
 */.DS_Store
 .DS_Store
+out/*
+*/out/*

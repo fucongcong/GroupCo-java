@@ -18,7 +18,7 @@
 
     package Service.Impl;
 
-    import Core.annotation.Param;
+    import Core.Param;
     import Service.UserService;
 
     public class UserServiceImpl implements UserService {
