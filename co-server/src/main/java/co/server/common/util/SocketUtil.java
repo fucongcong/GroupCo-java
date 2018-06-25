@@ -1,4 +1,4 @@
-package co.server.util;
+package co.server.common.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

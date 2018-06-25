@@ -13,7 +13,8 @@
     <bean id="ApplicationContextUtil" class="co.server.context.ApplicationContextUtil"></bean>
 
     <bean id="groupCoServer" class="co.server.co.CoServer">
-        <property name="port" value="8087"/>
+        <property name="serviceName" value="${co.serviceName}"/>
+        <property name="port" value="${co.port}"/>
     </bean>
 
 </beans>

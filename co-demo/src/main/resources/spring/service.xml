@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-          http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redisson="http://redisson.org/schema/redisson"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd http://redisson.org/schema/redisson http://redisson.org/schema/redisson/redisson.xsd">
+
+
+    <redisson:client id="coRedissonClient" codec-ref="codec">
+        <redisson:single-server address="redis://127.0.0.1:6379"/>
+    </redisson:client>
+    <bean id="codec" class="org.redisson.client.codec.StringCodec"/>
+    <bean id="redisKeyUtil"
+          class="co.server.common.util.RedisKeyUtil">
+        <property name="prefix" value="co"></property>
+    </bean>
 
     <bean id="userService" class="co.demo.services.Impl.UserServiceImpl"/>
 

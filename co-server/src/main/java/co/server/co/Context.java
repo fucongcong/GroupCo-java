@@ -7,11 +7,11 @@ public class Context {
 
     protected Map<String, Object> instances = new Hashtable<>();
 
-    public Object singleton(String name){
+    public Object singleton(String name) {
         return singleton(name, null);
     }
 
-    public Object singleton(String name, Object obj){
+    public Object singleton(String name, Object obj) {
         if (instances.get(name) != null) {
             return instances.get(name);
         }

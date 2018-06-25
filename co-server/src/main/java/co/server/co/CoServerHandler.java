@@ -4,16 +4,22 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import co.server.context.ApplicationContextUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 import co.server.pack.Data;
 import co.server.pack.Response;
-import co.server.util.MethodReflectUtil;
+import co.server.common.util.MethodReflectUtil;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;
 
 public class CoServerHandler extends ChannelInboundHandlerAdapter {
+
+    private static final Logger logger = LogManager.getLogger(CoServerHandler.class);
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -21,7 +27,7 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf in = (ByteBuf) msg;
 
         String info = in.toString(CharsetUtil.UTF_8);
-        System.out.println("info = " + info);
+        logger.debug("info = " + info);
 
         Data data = JSON.parseObject(info, Data.class);
         String res = invoke(data.getCmd(), data.getData());
@@ -71,7 +77,6 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
 
                             args[j] = jsonObj.get(parameterNames[j]);
                         }
-
                         return methods[i].invoke(servobj, args).toString();
                     } else {
                         return methods[i].invoke(servobj).toString();

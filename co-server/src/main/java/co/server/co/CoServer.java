@@ -1,17 +1,43 @@
 package co.server.co;
 
 
+import co.server.registry.RedisRegistryProcesser;
+import co.server.registry.RegistryProcesser;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import sun.misc.Signal;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 
 public class CoServer {
+
+    private boolean isClosed = false;
+
+    private static final Logger logger = LogManager.getLogger(CoServer.class);
+
+    private String serviceName;
+
+    private String registry;
+
+    public void setRegistry(String registry) {
+        this.registry = registry;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     private int port;
 
     public int getPort() {
@@ -49,15 +75,32 @@ public class CoServer {
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync();
 
-            // Wait until the server socket is closed.
-            // In this example, this does not happen, but you can do that to gracefully
-            // shut down your server.
-            f.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            workerGroup.shutdownGracefully();
+            InetAddress addr = InetAddress.getLocalHost();
+            String localIp = addr.getHostAddress();
+            RegistryProcesser p = new RedisRegistryProcesser(serviceName, localIp);
+            p.register();
+
+            logger.info(serviceName + " service(" + localIp + ":" + port + ") started...");
+
+            //f.channel().closeFuture().sync();
+            registerSignal();
+
+            registerShutdownHook(workerGroup, bossGroup, p);
+
+        } catch (InterruptedException | UnknownHostException e) {
             bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
+
+    private void registerSignal() {
+        Signal sig = new Signal("USR2");
+        Signal.handle(sig, new ShutdownHandler());
+    }
+
+    private void registerShutdownHook(EventLoopGroup workerGroup, EventLoopGroup bossGroup, RegistryProcesser processer) {
+        Thread t = new Thread(new ShutdownHook(workerGroup, bossGroup, processer), "ShutdownHook-Thread");
+        Runtime.getRuntime().addShutdownHook(t);
+    }
 }
+
