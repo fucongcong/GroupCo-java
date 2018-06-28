@@ -30,7 +30,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
     public void register() {
         RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
         set.add(address);
-        RTopic<String> topic = redissonClient.getTopic(serviceName);
+        RTopic<String> topic = redissonClient.getTopic(redisKeyUtil.getKey(serviceName));
         topic.publish("register");
     }
 
@@ -42,7 +42,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
     public void unRegister() {
         RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
         set.remove(address);
-        RTopic<String> topic = redissonClient.getTopic(serviceName);
+        RTopic<String> topic = redissonClient.getTopic(redisKeyUtil.getKey(serviceName));
         topic.publish("unRegister");
     }
 

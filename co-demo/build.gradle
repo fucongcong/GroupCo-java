@@ -12,24 +12,16 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(":co-server")
-    // https://mvnrepository.com/artifact/org.mybatis/mybatis
-    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
-    // https://mvnrepository.com/artifact/org.springframework/spring-context
+
     compile group: 'org.springframework', name: 'spring-context', version: '5.0.7.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework/spring-tx
     compile group: 'org.springframework', name: 'spring-tx', version: '5.0.7.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework/spring-core
-    // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.7.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '5.0.7.RELEASE'
-    // https://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-    compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.2'
 
     compile 'org.springframework.data:spring-data-jpa:2.0.8.RELEASE'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.16.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
 
 
 }
