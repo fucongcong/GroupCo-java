@@ -1,10 +1,12 @@
 package co.demo.services.Dao;
 
 import co.demo.services.Entity.UserEntity;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserMapper {
-    @Select("SELECT * FROM user WHERE id = #{id}")
-    UserEntity selectUser(@Param("id") int id);
+@Repository
+public interface UserRepository extends CrudRepository<UserEntity, Integer> {
+    @Query("select u from UserEntity u where u.mobile = ?1")
+    UserEntity getUserByMobile(String mobile);
 }

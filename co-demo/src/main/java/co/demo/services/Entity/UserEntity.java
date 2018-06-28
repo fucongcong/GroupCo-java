@@ -1,9 +1,25 @@
 package co.demo.services.Entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user", schema = "Demo")
 public class UserEntity {
-    private Integer id;
+
+    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private String mobile;
+    private String password;
 
     public String getMobile() {
         return mobile;
@@ -13,11 +29,11 @@ public class UserEntity {
         this.mobile = mobile;
     }
 
-    public Integer getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

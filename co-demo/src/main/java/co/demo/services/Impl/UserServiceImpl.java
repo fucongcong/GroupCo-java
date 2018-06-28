@@ -1,18 +1,31 @@
 package co.demo.services.Impl;
 
+import co.demo.services.Dao.UserRepository;
 import co.demo.services.Entity.UserEntity;
-import co.demo.services.Dao.UserMapper;
 import co.demo.services.UserService;
 import co.server.annotation.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class UserServiceImpl  implements UserService {
-
+@Service("userService")
+public class UserServiceImpl implements UserService {
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
-    public String getUser(@Param("id") int id, @Param("name") String name) {
-        UserEntity user = userMapper.selectUser(id);
-        return user.getMobile();
+    public UserEntity getUser(@Param("id") Integer id) {
+        return userRepository.findById(id).get();
     }
+
+    public Integer addUser(@Param("user") UserEntity user) {
+        return userRepository.save(user).getId();
+    }
+
+    public UserEntity getUserByMobile(@Param("mobile") String mobile) {
+        return userRepository.getUserByMobile(mobile);
+    }
+//
+//    public Integer updateUserPassword(@Param("userId") int userId,@Param("password") String password)
+//    {
+//
+//    }
 }
