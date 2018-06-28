@@ -1,23 +1,23 @@
 package co.server.pack;
 
 public class Response {
-    private Integer code;
+    private String cmd;
 
-    private String data;
+    private Object data;
 
-    public Integer getCode() {
-        return code;
+    public String getCmd() {
+        return cmd;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setCmd(String cmd) {
+        this.cmd = cmd;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

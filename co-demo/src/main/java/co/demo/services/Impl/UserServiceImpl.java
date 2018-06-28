@@ -23,9 +23,4 @@ public class UserServiceImpl implements UserService {
     public UserEntity getUserByMobile(@Param("mobile") String mobile) {
         return userRepository.getUserByMobile(mobile);
     }
-//
-//    public Integer updateUserPassword(@Param("userId") int userId,@Param("password") String password)
-//    {
-//
-//    }
 }

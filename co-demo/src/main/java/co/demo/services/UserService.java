@@ -10,6 +10,4 @@ public interface UserService {
     public Integer addUser(@Param("user") UserEntity user);
 
     public UserEntity getUserByMobile(@Param("mobile") String mobile);
-//
-//    public Integer updateUserPassword(@Param("userId") int userId,(@Param("password") String password);
 }

@@ -1,36 +1,122 @@
-### A Simple Rpc Server For Group-Co client
+### GroupCo基础服务提供者JAVA版
 
-### How it works
+### 快速开始
 
-#### Interface
+#### 编写服务接口UserService
 ```java
-    package Service;
+package co.demo.services;
 
-    public interface UserService {
 
-        public String getUser(int id, String name);
-    }
+import co.demo.services.Entity.UserEntity;
+import co.server.annotation.Param;
+
+public interface UserService {
+    public UserEntity getUser(@Param("id") Integer id);
+
+    public Integer addUser(@Param("user") UserEntity user);
+
+    public UserEntity getUserByMobile(@Param("mobile") String mobile);
+}
+
 
 ```
-#### 服务端提供Service实例
+#### 编写UserEntity实例
 
 ```java
 
-    package Service.Impl;
+package co.demo.services.Entity;
 
-    import Core.Param;
-    import Service.UserService;
+import javax.persistence.*;
 
-    public class UserServiceImpl implements UserService {
+@Entity
+@Table(name = "user", schema = "Demo")
+public class UserEntity {
 
-        public String getUser(@Param("id") int id, @Param("name") String name) {
-            return "user_"+id+"_"+name;
-        }
+    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private String mobile;
+    private String password;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
 
 ```
 
-#### 启动Server
+#### 编写Repository
+
+```java
+    package co.demo.services.Dao;
+    
+    import co.demo.services.Entity.UserEntity;
+    import org.springframework.data.jpa.repository.Query;
+    import org.springframework.data.repository.CrudRepository;
+    import org.springframework.stereotype.Repository;
+    
+    @Repository
+    public interface UserRepository extends CrudRepository<UserEntity, Integer> {
+        @Query("select u from UserEntity u where u.mobile = ?1")
+        UserEntity getUserByMobile(String mobile);
+    }
+```
+
+
+#### 实现UserServiceIml
+```java
+
+package co.demo.services.Impl;
+
+import co.demo.services.Dao.UserRepository;
+import co.demo.services.Entity.UserEntity;
+import co.demo.services.UserService;
+import co.server.annotation.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("userService")
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public UserEntity getUser(@Param("id") Integer id) {
+        return userRepository.findById(id).get();
+    }
+
+    public Integer addUser(@Param("user") UserEntity user) {
+        return userRepository.save(user).getId();
+    }
+
+    public UserEntity getUserByMobile(@Param("mobile") String mobile) {
+        return userRepository.getUserByMobile(mobile);
+    }
+}
+
+```
+
+#### 启动ServiceProvider。
 
 #### 使用Group-Co框架的Tcp客户端调用
 
@@ -43,14 +129,21 @@
         'gzip' => false,
 ```
 
-##### 调用
+##### 使用service_center()服务中心调用
+```php
+    $service = (yield service_center('User'));
+    $user = (yield $service->call("User::getUser", ['id' => $userId]));
+    dump($user);
+```
+
+##### 使用异步TCP客户端调用
 
 ```php
-    $tcp = new AsyncTcp('127.0.0.1', 9394);
-    $res = (yield $tcp->call(['cmd' => 'User::getUser', 'data' => ['id' => 1, 'name' => "coco"]]));
+    $tcp = new AsyncTcp('127.0.0.1', 8087);
+    $res = (yield $tcp->call(['cmd' => 'User\\User::getUser', 'data' => ['id' => 1]]));
 
     //it will return
-    //"{"cmd":"User::getUser","data":"user_1_coco"}"
+    //{"cmd":"User\\User::getUser","data":{"id":1,"mobile":"18768176261","password":"11111"}}
 ```
 
 #### 使用swoole客户端调用

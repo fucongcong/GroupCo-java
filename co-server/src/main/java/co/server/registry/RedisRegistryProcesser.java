@@ -13,6 +13,8 @@ public class RedisRegistryProcesser implements RegistryProcesser {
 
     private String address;
 
+    private  RedisKeyUtil redisKeyUtil = (RedisKeyUtil) ApplicationContextUtil.getBean("redisKeyUtil");
+
     private RedissonClient redissonClient = (RedissonClient) ApplicationContextUtil.getBean("coRedissonClient");;
 
     public RedisRegistryProcesser(String serviceName, String localIp) {
@@ -26,7 +28,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
      * @return boolean
      */
     public void register() {
-        RSet<String> set = redissonClient.getSet(RedisKeyUtil.getKey(Constants.PROVIDER, serviceName));
+        RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
         set.add(address);
         RTopic<String> topic = redissonClient.getTopic(serviceName);
         topic.publish("register");
@@ -38,7 +40,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
      * @return boolean
      */
     public void unRegister() {
-        RSet<String> set = redissonClient.getSet(RedisKeyUtil.getKey(Constants.PROVIDER, serviceName));
+        RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
         set.remove(address);
         RTopic<String> topic = redissonClient.getTopic(serviceName);
         topic.publish("unRegister");

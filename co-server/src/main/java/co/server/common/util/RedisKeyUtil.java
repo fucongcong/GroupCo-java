@@ -2,13 +2,13 @@ package co.server.common.util;
 
 public class RedisKeyUtil {
 
-    private static String prefix;
+    private String prefix = "co";
 
-    public static void setPrefix(String prefix) {
-        RedisKeyUtil.prefix = prefix;
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
-    public static String getKey(String... args)
+    public String getKey(String... args)
     {
         StringBuffer key = new StringBuffer(prefix);
         for (String arg : args) {
