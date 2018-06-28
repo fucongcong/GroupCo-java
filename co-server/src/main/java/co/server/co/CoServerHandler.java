@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import co.server.context.ApplicationContextUtil;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
@@ -14,8 +12,9 @@ import co.server.pack.Response;
 import co.server.common.util.MethodReflectUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+
 
 public class CoServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -28,19 +27,21 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
 
         String info = in.toString(CharsetUtil.UTF_8);
         logger.debug("info = " + info);
+        if (info.equals("ping")) {
+            ctx.writeAndFlush("pong");
+        } else {
+            Data data = JSON.parseObject(info, Data.class);
+            Object res = invoke(data.getCmd(), data.getData());
+            if (res == null) {
+                res = new Integer(0);
+            }
 
-        Data data = JSON.parseObject(info, Data.class);
-        String res = invoke(data.getCmd(), data.getData());
-        if (res == null) {
-            res = "0";
+            Response response = new Response();
+            response.setCmd(data.getCmd());
+            response.setData(res);
+            ctx.writeAndFlush(JSON.toJSONString(response));
         }
 
-        Response response = new Response();
-        response.setCode(200);
-        response.setData(res);
-        res = JSON.toJSONString(response);
-
-        ctx.writeAndFlush(res);
         ctx.close();
     }
 
@@ -51,17 +52,21 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
-    private String invoke(String cmd, String data) {
+    private Object invoke(String cmd, String data) {
         if (cmd == null) {
             return null;
         }
 
         try {
             String[] serviceAndMethod = cmd.split("::");
-            String className = serviceAndMethod[0].toLowerCase() + "Service";
-            Object servobj = ApplicationContextUtil.getBean(className);
+            String[] groupAndService = serviceAndMethod[0].split("\\\\");
+
+            checkServiceName(groupAndService[0]);
+
+            String className = groupAndService[1].toLowerCase() + "Service";
+            Object servObj = ApplicationContextUtil.getBean(className);
             String methodName = serviceAndMethod[1];
-            Class service = servobj.getClass();
+            Class service = servObj.getClass();
             Method[] methods = service.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 if (methodName.equals(methods[i].getName())) {
@@ -70,16 +75,19 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
                     if (parameterNames.length > 0) {
                         JSONObject jsonObj = JSON.parseObject(data);
                         Object[] args = new Object[parameterNames.length];
+                        // Object[] rargs = new Object[parameterNames.length];
+                        Type[] parameterTypes = methods[i].getParameterTypes();
+
                         for (int j = 0; j < parameterNames.length; j++) {
                             if (!jsonObj.containsKey(parameterNames[j])) {
                                 return null;
                             }
 
-                            args[j] = jsonObj.get(parameterNames[j]);
+                            args[j] = jsonObj.getObject(parameterNames[j], parameterTypes[j]);
                         }
-                        return methods[i].invoke(servobj, args).toString();
+                        return methods[i].invoke(servObj, args);
                     } else {
-                        return methods[i].invoke(servobj).toString();
+                        return methods[i].invoke(servObj);
                     }
                 }
             }
@@ -88,5 +96,12 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         return null;
+    }
+
+    private void checkServiceName(String serverName) throws Exception {
+        CoServer server = (CoServer) ApplicationContextUtil.getBean("groupCoServer");
+        if (!server.getServiceName().equals(serverName)) {
+            throw new Exception("error serverName");
+        }
     }
 }

@@ -17,9 +17,6 @@ import java.net.UnknownHostException;
 
 
 public class CoServer {
-
-    private boolean isClosed = false;
-
     private static final Logger logger = LogManager.getLogger(CoServer.class);
 
     private String serviceName;
@@ -77,7 +74,7 @@ public class CoServer {
 
             InetAddress addr = InetAddress.getLocalHost();
             String localIp = addr.getHostAddress();
-            RegistryProcesser p = new RedisRegistryProcesser(serviceName, localIp);
+            RegistryProcesser p = new RedisRegistryProcesser(serviceName, localIp+":"+port);
             p.register();
 
             logger.info(serviceName + " service(" + localIp + ":" + port + ") started...");
