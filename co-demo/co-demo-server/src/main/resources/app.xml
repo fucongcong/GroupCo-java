@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:redisson="http://redisson.org/schema/redisson"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://redisson.org/schema/redisson http://redisson.org/schema/redisson/redisson.xsd">
+
+    <context:component-scan base-package="co.demo.server"/>
+    <context:component-scan base-package="co.server"/>
+    <bean id="ApplicationContextUtil" class="co.server.context.ApplicationContextUtil"></bean>
+
+    <bean id="groupCoServer" class="co.server.CoServer">
+        <property name="serviceName" value="Demo"/>
+        <property name="port" value="8099"/>
+        <!--公开的服务-->
+        <property name="services">
+            <map>
+                <entry key-ref="demoService">
+                    <map>
+                        <entry key="interface" value="co.demo.server.DemoService"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <redisson:client id="coRedissonClient" codec-ref="codec">
+        <redisson:single-server address="redis://127.0.0.1:6379"/>
+    </redisson:client>
+    <bean id="codec" class="org.redisson.client.codec.StringCodec"/>
+    <bean id="redisKeyUtil"
+          class="co.server.common.util.RedisKeyUtil">
+        <property name="prefix" value="demo"></property>
+    </bean>
+</beans>

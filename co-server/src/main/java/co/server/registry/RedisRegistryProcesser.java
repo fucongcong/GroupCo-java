@@ -63,7 +63,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
     public void subscribe() {
         if (refServiceNames == null) return;
 
-        for (String serviceName : refServiceNames) {System.out.println("channel = " + redisKeyUtil.getKey(serviceName));
+        for (String serviceName : refServiceNames) {
             RTopic<String> topic = redissonClient.getTopic(redisKeyUtil.getKey(serviceName));
             topic.addListener(new MessageListener<String>() {
                 @Override
@@ -88,6 +88,7 @@ public class RedisRegistryProcesser implements RegistryProcesser {
      * 取消订阅
      */
     public void unSubscribe() {
+        if (refServiceNames == null) return;
         for (String serviceName : refServiceNames) {
             RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.CONSUMER, serviceName));
             set.remove(address);

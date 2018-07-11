@@ -37,7 +37,6 @@ public class ProxyFactory implements InvocationHandler {
         Request request = new Request();
         request.setCmd(this.serverName + "\\" + this.getServiceName() + "::" + method.getName());
         request.setId(Request.getAtomicId());
-        System.out.println("request.getCmd() = " + request.getCmd());
         Map param = new HashMap();
         String[] parameterNames = MethodReflectUtil.getMethodParameterNamesByAnnotation(method);
         if (parameterNames.length > 0) {
