@@ -166,9 +166,9 @@ public class Consumer {
 
 ##### 使用service_center()服务中心调用
 ```php
-    $service = (yield service_center('User'));
-    $user = (yield $service->call("User::getUser", ['id' => $userId]));
-    dump($user);
+    $service = (yield service_center('Demo'));
+    $res = (yield $service->call("Demo::sayHello", ['name' => world]));
+    dump($res);
 ```
 
 ##### 使用异步TCP客户端调用
