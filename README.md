@@ -7,7 +7,7 @@
 package co.demo.services;
 
 
-import co.demo.services.Entity.UserEntity;
+import co.user.dao.Entity.UserEntity;
 import co.server.annotation.Param;
 
 public interface UserService {
@@ -24,7 +24,7 @@ public interface UserService {
 
 ```java
 
-package co.demo.services.Entity;
+package co.user.dao.Entity;
 
 import javax.persistence.*;
 
@@ -71,7 +71,7 @@ public class UserEntity {
 ```java
     package co.demo.services.Dao;
     
-    import co.demo.services.Entity.UserEntity;
+    import co.user.dao.Entity.UserEntity;
     import org.springframework.data.jpa.repository.Query;
     import org.springframework.data.repository.CrudRepository;
     import org.springframework.stereotype.Repository;
@@ -90,7 +90,7 @@ public class UserEntity {
 package co.demo.services.Impl;
 
 import co.demo.services.Dao.UserRepository;
-import co.demo.services.Entity.UserEntity;
+import co.user.dao.Entity.UserEntity;
 import co.demo.services.UserService;
 import co.server.annotation.Param;
 import org.springframework.beans.factory.annotation.Autowired;

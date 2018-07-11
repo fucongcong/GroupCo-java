@@ -1,5 +1,8 @@
 package co.server.registry;
 
+import java.util.Map;
+import java.util.Set;
+
 public interface RegistryProcesser {
 
     /**
@@ -31,5 +34,5 @@ public interface RegistryProcesser {
     /**
      * 获取当前的服务列表
      */
-    public void getServerList();
+    public Map<String, Set<String>> getServerList();
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="co.shop.service"/>
+
+    <bean id="propertyConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:application.properties</value>
+        </property>
+    </bean>
+
+    <context:component-scan base-package="co.server"/>
+    <bean id="ApplicationContextUtil" class="co.server.context.ApplicationContextUtil"></bean>
+
+    <bean id="groupCoServer" class="co.server.CoServer">
+        <property name="serviceName" value="${co.serviceName}"/>
+        <property name="port" value="${co.port}"/>
+        <!--公开的服务-->
+        <property name="services">
+            <map>
+                <entry key-ref="shopService">
+                    <map>
+                        <entry key="interface" value="co.shop.api.ShopService"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

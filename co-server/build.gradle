@@ -18,4 +18,12 @@ dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
     compile group: 'org.redisson', name: 'redisson', version: '3.7.2'
+    compile group: 'org.springframework', name: 'spring-context', version: '5.0.7.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '5.0.7.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.7.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '5.0.7.RELEASE'
+    compile 'org.springframework.data:spring-data-jpa:2.0.8.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.16.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
 }
