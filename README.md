@@ -1,6 +1,6 @@
-### GroupCo基础服务提供者JAVA版
+### GroupCo-java
 
-###服务提供方
+### 服务提供方
 #### 定义服务接口
 DemoService.java
 
@@ -15,7 +15,7 @@ public interface DemoService {
 
 ```
 
-####在服务提供方实现接口
+#### 在服务提供方实现接口
 DemoServiceImpl
 ```java
 package co.demo.server;
@@ -31,7 +31,7 @@ public class DemoServiceImpl implements DemoService {
 }
 ```
 
-####用 Spring 配置声明暴露服务
+#### 用 Spring 配置声明暴露服务
 app.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -72,7 +72,7 @@ app.xml
     </bean>
 </beans>
 ```
-####加载 Spring 配置
+#### 加载 Spring 配置
 ServiceProvider.java
 ```java
 import co.server.CoServer;
@@ -89,8 +89,8 @@ public class ServiceProvider {
     }
 }
 ```
-###服务消费者
-####通过 Spring 配置引用远程服务
+### 服务消费者
+#### 通过 Spring 配置引用远程服务
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -129,7 +129,7 @@ public class ServiceProvider {
     </bean>
 </beans>
 ```
-####加载Spring配置，并调用远程服务
+#### 加载Spring配置，并调用远程服务
 Consumer.java
 ```java
 import co.demo.server.DemoService;
