@@ -19,6 +19,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     public ShopEntity getShop(@Param("name") String name) {
-        System.out.println("11name = " + name);return shopRepository.getShopByName(name);
+        System.out.println("11name = " + name);
+        return shopRepository.getShopByName(name);
     }
 }

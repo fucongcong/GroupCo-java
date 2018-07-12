@@ -87,13 +87,14 @@ public class CoServer {
             RegistryProcesser p = new RedisRegistryProcesser(serviceName, getRefServiceNames(), localIp + ":" + port);
             p.register();
 
+            b.bind(port).sync();
+
             registerServiceList(p);
 
             registerSignal();
 
             registerShutdownHook(workerGroup, bossGroup, p);
 
-            b.bind(port).sync();
             logger.info(serviceName + " service(" + localIp + ":" + port + ") started...");
 
         } catch (InterruptedException | UnknownHostException e) {

@@ -17,7 +17,7 @@ public class Client {
 
     protected Integer port;
 
-    protected Integer timeout = 5000;
+    protected Integer timeout = 3000;
 
     protected Float calltime;
 
@@ -105,6 +105,10 @@ public class Client {
         closed = true;
         CoChannel.removeChannel(this.channel);
         this.eventLoopGroup.shutdownGracefully();
+    }
+
+    public String getAddr() {
+        return this.host + ":" + this.port;
     }
 
     public InetSocketAddress getConnectAddress() {

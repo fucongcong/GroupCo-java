@@ -46,12 +46,7 @@ public class ProxyFactory implements InvocationHandler {
         }
         request.setData(JSON.toJSONString(param));
 
-        Client client = ((Services) ApplicationContextUtil.getBean("services")).getClient(this.serverName);
-        client.connect();
-        CoChannel cch = client.getChannel();
-        CoFuture coFuture = new CoFuture(cch, request);
-        cch.sendMsg(request);
-        return coFuture.get();
+        return ((Services) ApplicationContextUtil.getBean("services")).call(this.serverName, request);
     }
 
     public String getServiceName() {

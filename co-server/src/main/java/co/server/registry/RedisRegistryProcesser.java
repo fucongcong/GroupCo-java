@@ -1,5 +1,6 @@
 package co.server.registry;
 
+import co.server.Services;
 import co.server.common.Constants;
 import co.server.common.util.RedisKeyUtil;
 import co.server.context.ApplicationContextUtil;
@@ -35,7 +36,6 @@ public class RedisRegistryProcesser implements RegistryProcesser {
     /**
      * 注册服务
      *
-     * @return boolean
      */
     public void register() {
         RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
@@ -71,6 +71,9 @@ public class RedisRegistryProcesser implements RegistryProcesser {
                     RSet list = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));
                     if (list != null) {
                         serviceList.put(serviceName, list);
+
+                        //通知services刷新服务列表
+                        ((Services) ApplicationContextUtil.getBean("services")).refreshServices(serviceName);
                     }
                 }
             });

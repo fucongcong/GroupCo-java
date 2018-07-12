@@ -24,13 +24,13 @@ class ShutdownHook implements Runnable
 
     @Override
     public void run() {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+
         ((Services) ApplicationContextUtil.getBean("services")).close();
 
         processer.unRegister();
         processer.unSubscribe();
-
-        workerGroup.shutdownGracefully();
-        bossGroup.shutdownGracefully();
 
         logger.info("service shutdown...");
     }

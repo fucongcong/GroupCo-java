@@ -61,7 +61,7 @@ public class CoFuture implements ResponseFuture {
             while (!this.isDone()) {
                 //做个超时的判断
                 condition.await((long)timeout, TimeUnit.SECONDS);
-                if (this.isDone() || System.currentTimeMillis() - start > (long)timeout) {
+                if (this.isDone() || System.currentTimeMillis() - start > ((long)timeout * 1000)) {
                     break;
                 }
             }
