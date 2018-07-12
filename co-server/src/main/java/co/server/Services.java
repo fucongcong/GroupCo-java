@@ -1,6 +1,5 @@
 package co.server;
 
-import co.server.context.ApplicationContextUtil;
 import co.server.pack.Request;
 import co.server.proxy.ProxyFactory;
 import co.server.registry.RegistryProcesser;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component("services")
 public class Services {
@@ -18,9 +18,9 @@ public class Services {
 
     private static Map<String, Map<String, String>> references;
 
-    private Map<String, Client> services = new HashMap<>();
+    private Map<String, Client> services = new ConcurrentHashMap<>();
 
-    private Map<String, List<String>> addrs = new HashMap<>();
+    private Map<String, List<String>> addrs = new ConcurrentHashMap<>();
 
     public Map<String, Map<String, String>> getReferences() {
         return references;

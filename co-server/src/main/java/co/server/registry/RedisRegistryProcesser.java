@@ -9,13 +9,13 @@ import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.listener.MessageListener;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RedisRegistryProcesser implements RegistryProcesser {
 
-    private Map<String, Set<String>> serviceList = new HashMap<>();
+    private Map<String, Set<String>> serviceList = new ConcurrentHashMap<>();
 
     private String serviceName;
 
@@ -47,7 +47,6 @@ public class RedisRegistryProcesser implements RegistryProcesser {
     /**
      * 移除服务
      *
-     * @return boolean
      */
     public void unRegister() {
         RSet<String> set = redissonClient.getSet(redisKeyUtil.getKey(Constants.PROVIDER, serviceName));

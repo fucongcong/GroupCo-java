@@ -11,7 +11,5 @@ public class ServiceProvider {
         logger.info("service starting...");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/*.xml");
         context.start();
-        CoServer server = (CoServer) context.getBean("groupCoServer");
-        server.run();
     }
 }

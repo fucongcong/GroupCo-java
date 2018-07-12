@@ -7,7 +7,5 @@ public class ServiceProvider {
         System.out.println("service starting...");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:app.xml");
         context.start();
-        CoServer server = (CoServer) context.getBean("groupCoServer");
-        server.run();
     }
 }
