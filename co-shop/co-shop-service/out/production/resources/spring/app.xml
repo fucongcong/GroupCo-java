@@ -22,7 +22,7 @@
         <!--公开的服务-->
         <property name="services">
             <map>
-                <entry key-ref="shopService">
+                <entry key="shopService">
                     <map>
                         <entry key="interface" value="co.shop.api.ShopService"/>
                     </map>

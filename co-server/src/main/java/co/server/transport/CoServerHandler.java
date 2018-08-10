@@ -15,6 +15,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 
 public class CoServerHandler extends ChannelInboundHandlerAdapter {
@@ -74,9 +75,12 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
             String[] serviceAndMethod = cmd.split("::");
             String[] groupAndService = serviceAndMethod[0].split("\\\\");
 
-            checkServiceName(groupAndService[0]);
+            checkServerName(groupAndService[0]);
 
             String className = groupAndService[1].toLowerCase() + "Service";
+
+            checkServiceName(className);
+
             Object servObj = ApplicationContextUtil.getBean(className);
             String methodName = serviceAndMethod[1];
             Class service = servObj.getClass();
@@ -112,10 +116,18 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
         return null;
     }
 
-    private void checkServiceName(String serverName) throws Exception {
+    private void checkServerName(String serverName) throws Exception {
         CoServer server = (CoServer) ApplicationContextUtil.getBean("groupCoServer");
         if (!server.getServiceName().equals(serverName)) {
             throw new Exception("error serverName");
+        }
+    }
+
+    private void checkServiceName(String serviceName) throws Exception {
+        CoServer server = (CoServer) ApplicationContextUtil.getBean("groupCoServer");
+        Map<String, Map> services = server.getServices();
+        if (!services.containsKey(serviceName)) {
+            throw new Exception("undefind Service:"+serviceName);
         }
     }
 }

@@ -25,4 +25,6 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.16.Final'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: '4.2.1'
+
 }

@@ -1,5 +1,13 @@
 ### GroupCo-java
 
+### 特性
+- 支持内部服务调用
+- 支持GroupCo的客户端调用
+- 支持redis注册中心、服务的发现与注册
+- 客户端缓存
+- 服务优雅停机
+- 故障切换(todo)
+
 ### 服务提供方
 #### 定义服务接口
 DemoService.java
@@ -52,7 +60,7 @@ app.xml
         <!--公开的服务-->
         <property name="services">
             <map>
-                <entry key-ref="demoService">
+                <entry key="demoService">
                     <map>
                         <entry key="interface" value="co.demo.server.DemoService"/>
                     </map>

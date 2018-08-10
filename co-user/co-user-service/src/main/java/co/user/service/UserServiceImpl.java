@@ -23,10 +23,10 @@ public class UserServiceImpl implements UserService {
 
     public UserEntity getUser(@Param("id") Integer id) {
         try {
-            ShopService shopService = Services.getBean("shopService");
-            System.out.println("shopEntity = " + shopService.test("aaa"));
-            ShopEntity shopEntity = shopService.getShop("aaa");
-            System.out.println("shopEntity.getId() = " + shopEntity.getId());
+//            ShopService shopService = Services.getBean("shopService");
+//            System.out.println("shopEntity = " + shopService.test("aaa"));
+//            ShopEntity shopEntity = shopService.getShop("aaa");
+//            System.out.println("shopEntity.getId() = " + shopEntity.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

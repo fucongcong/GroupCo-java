@@ -33,7 +33,7 @@
         <!--公开的服务-->
         <property name="services">
             <map>
-                <entry key-ref="userService">
+                <entry key="userService">
                     <map>
                         <entry key="interface" value="co.user.api.UserService"/>
                     </map>

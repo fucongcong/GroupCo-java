@@ -16,7 +16,7 @@
         <!--公开的服务-->
         <property name="services">
             <map>
-                <entry key-ref="demoService">
+                <entry key="demoService">
                     <map>
                         <entry key="interface" value="co.demo.server.DemoService"/>
                     </map>
