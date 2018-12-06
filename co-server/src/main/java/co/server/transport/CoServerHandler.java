@@ -39,6 +39,7 @@ public class CoServerHandler extends ChannelInboundHandlerAdapter {
             } else {
                 request = JSON.parseObject(info, Request.class);
                 res = invoke(request.getCmd(), request.getData());
+                logger.debug("res = " + res);
             }
         } else {
             request = (Request) msg;
