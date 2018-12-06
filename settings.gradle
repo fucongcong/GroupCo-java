@@ -1,29 +1,28 @@
 rootProject.name = 'groupco'
-include 'netty-demo'
+
 include 'co-server'
-include 'co-demo'
-include 'co-shop'
-include 'co-shop-api'
-findProject(':co-shop-api')?.name = 'api'
-include 'api'
+
 include 'co-shop:co-shop-api'
 findProject(':co-shop:co-shop-api')?.name = 'co-shop-api'
 include 'co-shop:co-shop-dao'
 findProject(':co-shop:co-shop-dao')?.name = 'co-shop-dao'
 include 'co-shop:co-shop-service'
 findProject(':co-shop:co-shop-service')?.name = 'co-shop-service'
-include 'co-user'
+
 include 'co-user:co-user-api'
 findProject(':co-user:co-user-api')?.name = 'co-user-api'
-include 'co-user:co-user-dap'
-findProject(':co-user:co-user-dap')?.name = 'co-user-dap'
 include 'co-user:co-user-dao'
 findProject(':co-user:co-user-dao')?.name = 'co-user-dao'
 include 'co-user:co-user-service'
 findProject(':co-user:co-user-service')?.name = 'co-user-service'
-include 'co-demo'
+
+
 include 'co-demo:co-demo-server'
 findProject(':co-demo:co-demo-server')?.name = 'co-demo-server'
 include 'co-demo:co-demo-client'
 findProject(':co-demo:co-demo-client')?.name = 'co-demo-client'
 
+include 'co-sms:co-sms-api'
+findProject(':co-sms:co-sms-api')?.name = 'co-sms-api'
+include 'co-sms:co-sms-service'
+findProject(':co-sms:co-sms-service')?.name = 'co-sms-service'

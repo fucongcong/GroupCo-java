@@ -1,16 +1,16 @@
-group 'groupco'
-version '1.0-SNAPSHOT'
+subprojects {
+    group 'groupco'
+    version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+    apply plugin: 'java'
 
-sourceCompatibility = 1.8
+    sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile project(":co-shop")
-    compile project(":co-user")
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
 }
