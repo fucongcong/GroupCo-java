@@ -2,4 +2,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(":co-server")
     compile project(":co-sms:co-sms-api")
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-core', version: '3.7.0'
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-ecs', version: '4.11.0'
 }

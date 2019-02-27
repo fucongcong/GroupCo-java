@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="smsEntity" class="co.sms.common.SmsEntity">
+        <property name="appKey" value="${alinyun.appKey}"/>
+        <property name="appSecret" value="${alinyun.appSecret}"/>
+        <property name="templateids">
+            <map>
+                <entry key="code" value="SMS_127160498">
+                </entry>
+                <entry key="shop_amount" value="SMS_134260409">
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

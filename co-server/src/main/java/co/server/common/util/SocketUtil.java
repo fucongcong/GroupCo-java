@@ -49,12 +49,10 @@ public class SocketUtil {
         return buf.array();
     }
 
-    public static byte[] int2Byte(int target) {
-        byte[] bytes = new byte[4];
-        bytes[0] = (byte)(target & 0xff);
-        bytes[1] = (byte)((target >> 8) & 0xff);
-        bytes[2] = (byte)((target >> 16) & 0xff);
-        bytes[3] = (byte)((target >> 24) & 0xff);
-        return bytes;
+    public static byte[] int2Byte(int val) {
+        ByteBuffer buf = ByteBuffer.allocate(4);
+        buf.order(ByteOrder.BIG_ENDIAN);
+        buf.putInt(val);
+        return buf.array();
     }
 }

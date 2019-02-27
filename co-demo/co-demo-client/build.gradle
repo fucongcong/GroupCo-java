@@ -2,4 +2,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(":co-server")
     compile project(":co-demo:co-demo-server")
+    compile project(":co-sms:co-sms-api")
 }
