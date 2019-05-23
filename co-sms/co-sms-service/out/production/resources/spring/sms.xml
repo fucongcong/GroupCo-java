@@ -4,13 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="smsEntity" class="co.sms.common.SmsEntity">
-        <property name="appKey" value="${alinyun.appKey}"/>
-        <property name="appSecret" value="${alinyun.appSecret}"/>
+        <property name="appKey" value="${aliyun.appKey}"/>
+        <property name="appSecret" value="${aliyun.appSecret}"/>
+        <property name="signName" value="${aliyun.signName}"/>
         <property name="templateids">
             <map>
-                <entry key="code" value="SMS_127160498">
+                <entry key="code" value="111">
                 </entry>
-                <entry key="shop_amount" value="SMS_134260409">
+                <entry key="shop_amount" value="111">
                 </entry>
             </map>
         </property>

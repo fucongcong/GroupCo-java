@@ -14,4 +14,10 @@
           class="co.server.common.util.RedisKeyUtil">
         <property name="prefix" value="${redis.prefix}"></property>
     </bean>
+
+    <!--业务-->
+    <redisson:client id="rClient" codec-ref="rcodec" name="rClient">
+        <redisson:single-server address="${redis.address}"/>
+    </redisson:client>
+    <bean id="rcodec" class="org.redisson.codec.JsonJacksonCodec"/>
 </beans>

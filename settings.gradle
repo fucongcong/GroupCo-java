@@ -25,3 +25,5 @@ include 'co-sms:co-sms-api'
 findProject(':co-sms:co-sms-api')?.name = 'co-sms-api'
 include 'co-sms:co-sms-service'
 findProject(':co-sms:co-sms-service')?.name = 'co-sms-service'
+
+

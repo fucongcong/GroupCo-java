@@ -58,14 +58,17 @@ class GenerateServiceCommand
         $data = $this->getFile("Service.java.tpl", $service, $groupname);
         file_put_contents ($apiDir."/src/main/java/{$groupname}/{$service}/api/".ucfirst($service)."Service.java", $data);
         $data = $this->getFile("ServiceImpl.java.tpl", $service, $groupname);
-        file_put_contents ($apiDir."/src/main/java/{$groupname}/{$service}/service/".ucfirst($service)."ServiceImpl.java", $data);
+        file_put_contents ($serviceDir."/src/main/java/".ucfirst($service)."ServiceImpl.java", $data);
+        //exec("javac -d ".$serviceDir."/src/main/java/ ".ucfirst($service)."ServiceImpl.java");
         $data = $this->getFile("ServiceProvider.java.tpl", $service, $groupname);
-        file_put_contents ($dir."/src/main/java/ServiceProvider.java", $data);
+        file_put_contents ($serviceDir."/src/main/java/ServiceProvider.java", $data);
 
         //更新settings.gradle
         $data = $this->getFile("settings.gradle.tpl", $service, $groupname);
         file_put_contents(__ROOT__."settings.gradle", $data, FILE_APPEND);
         $this->outPut("初始化{$mservice}完成");
+
+        //exec("gradle");
     }
 
     private function getFile($tpl, $serviceName, $group)

@@ -3,10 +3,10 @@ package co.sms.service;
 import co.server.annotation.Param;
 import co.server.common.util.RedisKeyUtil;
 import co.sms.common.SmsEntity;
-import com.alibaba.fastjson.JSON;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,7 @@ public class SmsServiceImpl {
     private String env;
 
     @Autowired
+    @Qualifier("rClient")
     private RedissonClient redissonClient;
 
     @Autowired
@@ -40,20 +41,48 @@ public class SmsServiceImpl {
 
         if (res) {
             long time = System.currentTimeMillis()/1000;
-            Map<String, String> info = new HashMap();
+            Map info = new HashMap();
             info.put("mobile", mobile);
-            info.put("nexttime",  String.valueOf(time + 25));
-            info.put("expiretime",  String.valueOf(time + 600));
-            info.put("code",  String.valueOf(code));
-            info.put("count",  "0");
+            info.put("nexttime",  time + 25);
+            info.put("expiretime",  time + 600);
+            info.put("code",  code);
+            info.put("count",  0);
 
-            RBucket<String> set = redissonClient.getBucket(redisKeyUtil.getKey("mobile_code_"+mobile));
-            set.set(JSON.toJSONString(info));
+            RBucket<Map> set = redissonClient.getBucket(redisKeyUtil.getKey("mobile_code_"+mobile));
+            set.set(info);
             set.expire(600, TimeUnit.SECONDS);
 
             return true;
         }
 
         return false;
+    }
+
+    public int isActiveCode(@Param("code") int code, @Param("mobile") String mobile)
+    {
+        RBucket<Map> set = redissonClient.getBucket(redisKeyUtil.getKey("mobile_code_"+mobile));
+        Map info = set.get();
+        if (info != null) {
+            long time = System.currentTimeMillis()/1000;
+            if ((int) info.get("code") == code
+                    && info.get("mobile").equals(mobile)
+                    && time < (long) info.get("expiretime")) {
+                set.delete();
+                return 1;
+            }
+
+            int count = (int) info.get("count");
+            info.put("count", count++);
+            if (count > 5) {
+                set.delete();
+                return 1010;
+            }
+
+            set.set(info);
+            set.expire(600, TimeUnit.SECONDS);
+        }
+
+        //验证码错误
+        return 1009;
     }
 }

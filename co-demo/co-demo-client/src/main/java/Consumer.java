@@ -15,5 +15,7 @@ public class Consumer {
         SmsService smsService = Services.getBean("smsService");
         boolean res = smsService.sendSms("18768176260");
         System.out.println("res = " + res);
+        int code = smsService.isActiveCode(1234, "18768176260");
+        System.out.println("code = " + code);
     }
 }
